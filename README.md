@@ -1,2 +1,4 @@
-# playground
-Test Repos
+# Badges
+
+<!-- START CREDLY BADGES -->
+<!-- END CREDLY BADGES -->
