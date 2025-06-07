@@ -13,4 +13,4 @@ jobs:
 
     steps:
       - name: Badges - Readme
-        uses: jd-35656/badge-readme@feature/action
+        uses: jd-35656/readme-credly-badges@feature/action
