@@ -16,3 +16,5 @@ jobs:
         uses: jd-35656/readme-credly-badges@main
         with:
           COMMIT_MESSAGE: "chore: Update README with new badges."
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
