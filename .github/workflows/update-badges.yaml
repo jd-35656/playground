@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Badges - Readme
-        uses: jd-35656/readme-credly-badges@release/v1
+        uses: jd-35656/readme-credly-badges@refactor/v1
         with:
           COMMIT_MESSAGE: "chore: Update README with new badges."
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
