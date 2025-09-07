@@ -1,4 +1,4 @@
-# Badges
+# Badges - test
 
 <!-- START CREDLY BADGES -->
 [![HashiCorp Certified: Terraform Associate (003)](https://images.credly.com/size/150x150/images/0dc62494-dc94-469a-83af-e35309f27356/blob)](https://www.credly.com/badges/9818630e-28f4-4541-964c-e79041c4d601)
