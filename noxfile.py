@@ -145,5 +145,5 @@ def docs_deploy(session: nox.Session) -> None:
     session.install(*DOC_DEPS, ".")
     version = session.posargs[0] if session.posargs else "dev"
     alias = session.posargs[1] if len(session.posargs) > 1 else "latest"
-    session.run("mike", "deploy", version, alias)
+    session.run("mike", "deploy", "--update-aliases", version, alias)
     session.run("mike", "set-default", alias)
