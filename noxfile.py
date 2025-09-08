@@ -141,7 +141,7 @@ def docs_serve(session: nox.Session) -> None:
 
 
 @nox.session(python=DEFAULT_PYTHON)
-def docs_build(session: nox.Session) -> None:
+def docs_deploy(session: nox.Session) -> None:
     session.install(*DOC_DEPS, ".")
     version = session.posargs[0] if session.posargs else "dev"
     alias = session.posargs[1] if len(session.posargs) > 1 else "latest"

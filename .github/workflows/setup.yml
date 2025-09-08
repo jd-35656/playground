@@ -26,7 +26,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/${{ github.repository }}/pages)
-          
+
           http_code=$(echo "$response" | tail -n1)
           if [ "$http_code" = "200" ]; then
             echo "GitHub Pages already configured - skipping setup"
@@ -74,7 +74,7 @@ jobs:
           echo "Version: dev (latest)"
           nox --error-on-missing-interpreters --non-interactive --session docs_deploy -- dev latest
           echo "Documentation built successfully"
-          
+
           echo "Pushing to gh-pages branch..."
           git push origin gh-pages
           echo "Documentation deployed to gh-pages"
@@ -88,7 +88,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/${{ github.repository }}/pages \
             -d '{"source":{"branch":"gh-pages","path":"/"}}')
-          
+
           http_code=$(echo "$response" | tail -n1)
           if [ "$http_code" = "201" ]; then
             echo "GitHub Pages configured successfully"
