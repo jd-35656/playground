@@ -16,7 +16,9 @@ def create_app() -> typer.Typer:
     )
 
     @app.callback(invoke_without_command=True)
-    def main(version: bool = typer.Option(False, "--version", "-v", help="Show the application's version and exit.")):
+    def main(
+        version: bool = typer.Option(False, "--version", "-v", help="Show the application's version and exit."),
+    ) -> None:
         """
         Resumake CLI — generate resumes with ease.
         """
