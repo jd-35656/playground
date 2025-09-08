@@ -84,24 +84,17 @@ jobs:
           git push origin gh-pages
           echo "Documentation deployed to gh-pages"
 
-      - name: Configure GitHub Pages
+      - name: GitHub Pages setup instructions
         if: env.setup_needed == 'true'
         run: |
-          echo "Configuring GitHub Pages..."
-          response=$(curl -s -w "\n%{http_code}" -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/pages \
-            -d '{"source":{"branch":"gh-pages","path":"/"}}')
-
-          http_code=$(echo "$response" | tail -n1)
-          if [ "$http_code" = "201" ]; then
-            echo "GitHub Pages configured successfully"
-          else
-            echo "GitHub Pages configuration failed: $http_code"
-            echo "Response: $(echo "$response" | head -n -1)"
-            exit 1
-          fi
+          echo "GitHub Pages configuration required:"
+          echo "1. Go to Settings → Pages"
+          echo "2. Source: Deploy from a branch"
+          echo "3. Branch: gh-pages"
+          echo "4. Folder: / (root)"
+          echo ""
+          echo "The gh-pages branch has been created and documentation deployed."
+          echo "Manual configuration is required due to GitHub token limitations."
 
       - name: Setup complete
         run: |
@@ -110,9 +103,9 @@ jobs:
             echo "Setup completed successfully!"
             echo ""
             echo "Summary:"
-            echo "  - GitHub Pages configured"
-            echo "  - Mike initialized with 'dev' version"
             echo "  - gh-pages branch created and deployed"
+            echo "  - Mike initialized with 'dev' version"
+            echo "  - Manual GitHub Pages configuration needed (see instructions above)"
           else
             echo "Setup already complete!"
             echo ""
