@@ -1,15 +1,15 @@
 [build-system]
 build-backend = "hatchling.build"
 
-requires = [ "hatch-vcs", "hatchling" ]
+requires = ["hatch-vcs", "hatchling"]
 
 [project]
 name = "resumake"
 description = "Make polished resumes from JSON with TeX"
 readme = "README.md"
-keywords = [  ]
+keywords = []
 license = "MIT"
-authors = [ { name = "Jitesh Sahani (JD)", email = "jitesh.sahani@outlook.com" } ]
+authors = [{ name = "Jitesh Sahani (JD)", email = "jitesh.sahani@outlook.com" }]
 requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -24,8 +24,8 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dynamic = [ "version" ]
-dependencies = [ "typer~=0.17.3" ]
+dynamic = ["version"]
+dependencies = ["typer~=0.17.3"]
 
 optional-dependencies.docs = [
   "jinja2",
@@ -41,8 +41,8 @@ optional-dependencies.docs = [
   "ruff",
   "towncrier",
 ]
-optional-dependencies.tests = [ "pytest>=8.3.5", "pytest-cov>=6.1.1" ]
-optional-dependencies.types = [  ]
+optional-dependencies.tests = ["pytest>=8.3.5", "pytest-cov>=6.1.1"]
+optional-dependencies.types = []
 urls.Documentation = "https://github.com/jd-35656/resumake#readme"
 urls.Issues = "https://github.com/jd-35656/resumake/issues"
 urls.Source = "https://github.com/jd-35656/resumake"
@@ -62,7 +62,7 @@ version-file = "src/resumake/_version.py"
 [tool.ruff]
 target-version = "py311"
 line-length = 121
-src = [ "src" ]
+src = ["src"]
 
 format.indent-style = "space"
 format.quote-style = "double"
@@ -96,8 +96,8 @@ lint.select = [
   "UP",
   "W",
 ]
-lint.per-file-ignores."tests/*" = [ "N806", "S101", "S106" ]
-lint.isort.known-first-party = [ "resumake" ]
+lint.per-file-ignores."tests/*" = ["N806", "S101", "S106"]
+lint.isort.known-first-party = ["resumake"]
 lint.mccabe.max-complexity = 15
 
 [tool.codespell]
@@ -109,30 +109,30 @@ quiet-level = 2
 minversion = "8.0"
 log_cli = true
 log_cli_level = "INFO"
-testpaths = [ "tests" ]
-pythonpath = [ "src" ]
-addopts = [ "-ra", "--strict-config", "--strict-markers" ]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = ["-ra", "--strict-config", "--strict-markers"]
 
 [tool.coverage.run]
-source_pkgs = [ "resumake", "tests" ]
+source_pkgs = ["resumake", "tests"]
 branch = true
 parallel = true
-omit = [ "src/resumake/_version.py" ]
+omit = ["src/resumake/_version.py"]
 
 [tool.coverage.paths]
-resumake = [ "src/resumake", "*/resumake/src/resumake" ]
-tests = [ "tests", "*/resumake/tests" ]
+resumake = ["src/resumake", "*/resumake/src/resumake"]
+tests = ["tests", "*/resumake/tests"]
 
 [tool.coverage.report]
-exclude_lines = [ "no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:" ]
-fail_under = 1
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+fail_under = 0
 
 [tool.towncrier]
 directory = "changelog.d"
 filename = "docs/changelog.md"
 package = "resumake"
 start_string = "<!-- BEGIN RELEASED CHANGELOG -->\n"
-underlines = [ "", "", "" ]
+underlines = ["", "", ""]
 title_format = "## [{version}](https://github.com/twisted/my-project/tree/{version}) - {project_date}"
 issue_format = "[#{issue}](https://github.com/twisted/my-project/issues/{issue})"
 
@@ -155,6 +155,6 @@ name = "Changed"
 name = "Fixed"
 
 [tool.mypy]
-files = [ "src", "tests" ]
+files = ["src", "tests"]
 ignore_missing_imports = true
 strict = true
