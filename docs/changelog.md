@@ -10,3 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 {% include '_draft_changelog.md' ignore missing %}
 
 <!-- BEGIN RELEASED CHANGELOG -->
+
+## [1.0.0](https://github.com/twisted/my-project/tree/1.0.0) - 2025-09-08
+
+### Added
+
+- - Demo ([#1](https://github.com/twisted/my-project/issues/1))
