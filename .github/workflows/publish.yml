@@ -1,0 +1,66 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+env:
+  default-python: "3.11"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.default-python }}
+          cache: pip
+
+      - name: Cache Nox environments
+        uses: actions/cache@v4
+        with:
+          path: .nox
+          key: nox-ubuntu-latest-${{ env.default-python }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
+          restore-keys: |
+            nox-ubuntu-latest-${{ env.default-python }}-
+
+      - name: Install Nox
+        run: pip install nox
+
+      - name: Build package
+        run: nox --error-on-missing-interpreters --non-interactive --session build
+
+      - name: Get version from tag
+        run: |
+          version=${GITHUB_REF#refs/tags/v}
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Deploy docs with mike
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          nox --error-on-missing-interpreters --non-interactive --session docs_deploy -- ${{ env.version }}
+          git push origin gh-pages
+
+      - name: Generate attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: 'dist/*'
+
+      - name: Upload to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          print-hash: true

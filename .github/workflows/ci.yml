@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "release/**"
+    paths-ignore:
+      - "*.md"
+      - "docs/**"
+      - ".gitignore"
+  pull_request:
+    paths-ignore:
+      - "*.md"
+      - "docs/**"
+      - ".gitignore"
+  schedule:
+    - cron: "0 8 * * 1" # Weekly on Monday
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/heads/release/') && github.ref != 'refs/heads/main' }}
+
+env:
+  default-python: "3.13"
+  FORCE_COLOR: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  test:
+    name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        include:
+          - os: windows-latest
+            python-version: ${{ env.default-python }}
+          - os: macos-latest
+            python-version: ${{ env.default-python }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Cache Nox environments
+        uses: actions/cache@v4
+        with:
+          path: .nox
+          key: nox-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
+          restore-keys: |
+            nox-${{ matrix.os }}-${{ matrix.python-version }}-
+
+      - name: Install Nox
+        run: pip install nox
+
+      - name: Run tests
+        run: nox --error-on-missing-interpreters --non-interactive --session tests-${{ matrix.python-version }}
+
+  check:
+    name: Type checking
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.default-python }}
+          cache: pip
+
+      - name: Cache Nox environments
+        uses: actions/cache@v4
+        with:
+          path: .nox
+          key: nox-ubuntu-latest-${{ env.default-python }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
+          restore-keys: |
+            nox-ubuntu-latest-${{ env.default-python }}-
+
+      - name: Install Nox
+        run: pip install nox
+
+      - name: Run type checking
+        run: nox --error-on-missing-interpreters --non-interactive --session typecheck
+
+  all-green:
+    name: All checks passed
+    if: always()
+    needs: [test, check]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all successes
+        uses: re-actors/alls-green@v1.2.2
+        with:
+          jobs: ${{ toJSON(needs) }}

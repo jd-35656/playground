@@ -1,0 +1,120 @@
+name: Setup
+
+on:
+  workflow_dispatch:
+
+env:
+  default-python: "3.13"
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check GitHub Pages status
+        run: |
+          echo "Checking GitHub Pages configuration..."
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pages)
+          
+          http_code=$(echo "$response" | tail -n1)
+          if [ "$http_code" = "200" ]; then
+            echo "GitHub Pages already configured - skipping setup"
+            echo "setup_needed=false" >> $GITHUB_ENV
+          else
+            echo "GitHub Pages not configured - proceeding with setup"
+            echo "setup_needed=true" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Python
+        if: env.setup_needed == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.default-python }}
+          cache: pip
+
+      - name: Cache Nox environments
+        if: env.setup_needed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: .nox
+          key: nox-ubuntu-latest-${{ env.default-python }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
+          restore-keys: |
+            nox-ubuntu-latest-${{ env.default-python }}-
+
+      - name: Install Nox
+        if: env.setup_needed == 'true'
+        run: |
+          echo "Installing Nox..."
+          pip install nox
+          echo "Nox installed successfully"
+
+      - name: Configure Git
+        if: env.setup_needed == 'true'
+        run: |
+          echo "Configuring Git for automation..."
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "Git configured"
+
+      - name: Deploy documentation with Mike
+        if: env.setup_needed == 'true'
+        run: |
+          echo "Building and deploying documentation..."
+          echo "Version: dev (latest)"
+          nox --error-on-missing-interpreters --non-interactive --session docs_deploy -- dev latest
+          echo "Documentation built successfully"
+          
+          echo "Pushing to gh-pages branch..."
+          git push origin gh-pages
+          echo "Documentation deployed to gh-pages"
+
+      - name: Configure GitHub Pages
+        if: env.setup_needed == 'true'
+        run: |
+          echo "Configuring GitHub Pages..."
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pages \
+            -d '{"source":{"branch":"gh-pages","path":"/"}}')
+          
+          http_code=$(echo "$response" | tail -n1)
+          if [ "$http_code" = "201" ]; then
+            echo "GitHub Pages configured successfully"
+          else
+            echo "GitHub Pages configuration failed: $http_code"
+          fi
+
+      - name: Setup complete
+        run: |
+          echo ""
+          if [ "${{ env.setup_needed }}" = "true" ]; then
+            echo "Setup completed successfully!"
+            echo ""
+            echo "Summary:"
+            echo "  - GitHub Pages configured"
+            echo "  - Mike initialized with 'dev' version"
+            echo "  - gh-pages branch created and deployed"
+          else
+            echo "Setup already complete!"
+            echo ""
+            echo "Summary:"
+            echo "  - GitHub Pages was already configured"
+            echo "  - No changes needed"
+          fi
+          echo ""
+          echo "Your documentation is available at:"
+          echo "   https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          echo ""
+          echo "Note: It may take a few minutes for GitHub Pages to become available."

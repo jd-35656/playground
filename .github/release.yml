@@ -1,0 +1,49 @@
+changelog:
+  exclude:
+    authors:
+      - dependabot[bot]
+      - pre-commit-ci[bot]
+      - github-actions[bot]
+    labels:
+      - ci
+      - chore
+      - no-changelog
+      - dependencies
+      - skip-changelog
+      - question
+      - discussion
+      - duplicate
+      - invalid
+      - wontfix
+
+  categories:
+    - title: "🚀 Added"
+      labels:
+        - feature
+        - enhancement
+        - added
+
+    - title: "🔄 Changed"
+      labels:
+        - changed
+        - refactor
+        - breaking-change
+
+    - title: "⚠️ Deprecated"
+      labels:
+        - deprecated
+
+    - title: "🗑️ Removed"
+      labels:
+        - removed
+
+    - title: "🐛 Fixed"
+      labels:
+        - fix
+        - bug
+        - bugfix
+
+    - title: "🔒 Security"
+      labels:
+        - security
+        - vulnerability
