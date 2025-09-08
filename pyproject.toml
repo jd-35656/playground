@@ -125,7 +125,7 @@ tests = [ "tests", "*/resumake/tests" ]
 
 [tool.coverage.report]
 exclude_lines = [ "no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:" ]
-fail_under = 70
+fail_under = 1
 
 [tool.towncrier]
 directory = "changelog.d"

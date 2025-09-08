@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  default-python: "3.11"
+  default-python: "3.13"
 
 jobs:
   publish:
@@ -57,7 +57,7 @@ jobs:
       - name: Generate attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: 'dist/*'
+          subject-path: "dist/*"
 
       - name: Upload to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

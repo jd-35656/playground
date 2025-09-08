@@ -16,7 +16,7 @@ on:
     types: [closed]
 
 env:
-  default-python: "3.11"
+  default-python: "3.13"
 
 jobs:
   prepare-release:

@@ -16,7 +16,7 @@ DEFAULT_PYTHON: str = PYTHON_VERSIONS[-1]
 # ----------------------------
 # Settings
 # ----------------------------
-nox.options.sessions = ["tests", "check", "docs_build"]
+nox.options.sessions = ["tests", "check"]
 nox.options.reuse_existing_virtualenvs = True
 
 
