@@ -32,9 +32,13 @@ jobs:
           if [ "$http_code" = "200" ]; then
             echo "GitHub Pages already configured - skipping setup"
             echo "setup_needed=false" >> $GITHUB_ENV
-          else
+          elif [ "$http_code" = "404" ]; then
             echo "GitHub Pages not configured - proceeding with setup"
             echo "setup_needed=true" >> $GITHUB_ENV
+          else
+            echo "Error checking GitHub Pages status: $http_code"
+            echo "Response: $(echo "$response" | head -n -1)"
+            exit 1
           fi
 
       - name: Set up Python
@@ -95,6 +99,8 @@ jobs:
             echo "GitHub Pages configured successfully"
           else
             echo "GitHub Pages configuration failed: $http_code"
+            echo "Response: $(echo "$response" | head -n -1)"
+            exit 1
           fi
 
       - name: Setup complete
