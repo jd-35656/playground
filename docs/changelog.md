@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- BEGIN RELEASED CHANGELOG -->
 
+## [1.1.1](https://github.com/twisted/my-project/tree/1.1.1) - 2025-09-08
+
+### Changed
+
+- - Another demo ([#3](https://github.com/twisted/my-project/issues/3))
+
+
 ## [1.1.0](https://github.com/twisted/my-project/tree/1.1.0) - 2025-09-08
 
 ### Removed

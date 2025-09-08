@@ -1,7 +1,7 @@
-## [1.1.0](https://github.com/twisted/my-project/tree/1.1.0) - 2025-09-08
+## [1.1.1](https://github.com/twisted/my-project/tree/1.1.1) - 2025-09-08
 
-### Removed
+### Changed
 
-- - Removed ([#2](https://github.com/twisted/my-project/issues/2))
+- - Another demo ([#3](https://github.com/twisted/my-project/issues/3))
 
 
