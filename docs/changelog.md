@@ -10,3 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 {% include '_draft_changelog.md' ignore missing %}
 
 <!-- BEGIN RELEASED CHANGELOG -->
+
+## [1.0.0](https://github.com/jd-35656/sealkey/tree/1.0.0) - 2025-10-10
+
+No significant changes.
