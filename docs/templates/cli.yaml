@@ -1,0 +1,39 @@
+# CLI Command Tree Structure
+# This YAML file defines the command hierarchy for automatic CLI documentation generation.
+#
+# Structure (all keys, no lists):
+#   command_name:
+#     subcommand1:
+#     subcommand2:
+#   or for nested commands:
+#   command_name:
+#     subcommand1:
+#       sub_subcommand1:
+#       sub_subcommand2:
+#     subcommand2:
+#
+# Examples:
+#   git:
+#     add:
+#     commit:
+#     push:
+#   docker:
+#     container:
+#       ls:
+#       run:
+#       stop:
+#     image:
+#       build:
+#       pull:
+#
+# The script will generate documentation by running:
+#   sealkey --help
+#   sealkey subcommand --help
+#   etc.
+
+pip:
+#   unlock:
+#   add:
+#   remove:
+#   update:
+#   lock:

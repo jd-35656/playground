@@ -1,0 +1,170 @@
+[build-system]
+build-backend = "hatchling.build"
+
+requires = ["hatch-vcs", "hatchling"]
+
+[project]
+name = "sealkey"
+dynamic = ["version"]
+description = 'A simple, secure tool to store your secrets with ease.'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [{ name = "jd-35656", email = "jitesh.sahani@outlook.com" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["click"]
+optional-dependencies.docs = [
+  "jinja2",
+  "mike",
+  "mkdocs",
+  "mkdocs-autorefs",
+  "mkdocs-gen-files",
+  "mkdocs-macros-plugin",
+  "mkdocs-material",
+  "mkdocstrings",
+  "mkdocstrings-python",
+  "pymdown-extensions",
+  "pyyaml",
+  "ruff",
+  "towncrier",
+]
+optional-dependencies.tests = ["pytest>=8.3.5", "pytest-cov>=6.1.1"]
+optional-dependencies.types = []
+
+[project.urls]
+Documentation = "https://github.com/jd-35656/sealkey#readme"
+Issues = "https://github.com/jd-35656/sealkey/issues"
+Source = "https://github.com/jd-35656/sealkey"
+
+[project.scripts]
+sealkey = "sealkey.cli:sealkey"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+fallback_version = "0.0.0"
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/sealkey/__version__.py"
+
+[tool.ruff]
+line-length = 121
+src = ["src"]
+
+format.indent-style = "space"
+format.quote-style = "double"
+format.skip-magic-trailing-comma = false
+lint.select = [
+  "A",
+  "ARG",
+  "B",
+  "C4",
+  "C9",
+  "DTZ",
+  "E",
+  "F",
+  "I",
+  "ISC",
+  "N",
+  "PERF",
+  "PGH",
+  "PIE",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "PYI",
+  "Q",
+  "RSE",
+  "RUF",
+  "S",
+  "SIM",
+  "T20",
+  "UP",
+  "W",
+]
+lint.ignore = ["B008"]
+lint.per-file-ignores."tests/*" = ["N806", "S101", "S106"]
+lint.isort.known-first-party = ["sealkey"]
+lint.mccabe.max-complexity = 15
+
+
+[tool.codespell]
+skip = ".git,venv,__pycache__,.mypy_cache,.ruff_cache"
+check-hidden = true
+quiet-level = 2
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+log_cli = true
+log_cli_level = "INFO"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+  "-ra",
+  "--strict-config",
+  "--strict-markers",
+  "--cov=src",
+  "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+source_pkgs = ["sealkey"]
+branch = true
+parallel = true
+omit = ["src/sealkey/__version__.py"]
+
+[tool.coverage.paths]
+sealkey = ["src/sealkey", "*/sealkey/src/sealkey"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+fail_under = 90
+
+[tool.towncrier]
+directory = "changelog.d"
+filename = "docs/changelog.md"
+package = "sealkey"
+start_string = "<!-- BEGIN RELEASED CHANGELOG -->\n"
+underlines = ["", "", ""]
+title_format = "## [{version}](https://github.com/jd-35656/sealkey/tree/{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/jd-35656/sealkey/issues/{issue})"
+
+[[tool.towncrier.type]]
+name = "Security"
+
+[[tool.towncrier.type]]
+name = "Removed"
+
+[[tool.towncrier.type]]
+name = "Deprecated"
+
+[[tool.towncrier.type]]
+name = "Added"
+
+[[tool.towncrier.type]]
+name = "Changed"
+
+[[tool.towncrier.type]]
+name = "Fixed"
+
+
+[tool.mypy]
+files = ["src"]
+ignore_missing_imports = true
+strict = true
